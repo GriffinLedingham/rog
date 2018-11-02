@@ -1,7 +1,7 @@
-import GameEntity from './gameEntity'
+import GameEntity from '../gameEntity'
 
 class Player extends GameEntity {
-  render() {
+  public getSprite() {
     return '*'
   }
 }

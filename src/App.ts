@@ -1,7 +1,10 @@
 import Map from './classes/map'
-import Player from './classes/player';
+import Player from './classes/entities/player';
 import GameEntity from './classes/gameEntity';
 import Input from './classes/components/input'
+import Canvas from './classes/components/canvas/terminal'
+
+let canvas = new Canvas(process.stdout.rows-1,process.stdout.columns)
 
 let input = new Input()
 let player = new Player(input)
@@ -10,9 +13,11 @@ player.setPos(10,10)
 let enemy = new GameEntity()
 enemy.setPos(20,20)
 
+let gameEntities = []
+gameEntities.push(player)
+gameEntities.push(enemy)
+
 let map = new Map(process.stdout.rows-1,process.stdout.columns)
-map.addEntity(player)
-map.addEntity(enemy)
 let tickLengthMs = 1000 / 60
 let previousTick = Date.now()
 let actualTicks = 0
@@ -30,6 +35,7 @@ let gameLoop = function( ) {
     let delta = (now - previousTick) / 1000
     previousTick = now
     update(delta)
+    render(delta)
     actualTicks = 0
   }
   if (Date.now() - previousTick < tickLengthMs - 16) {
@@ -40,11 +46,27 @@ let gameLoop = function( ) {
 }
 
 let update = function( delta ) {
-  map.render()
-  player.update()
-  enemy.update()
+  for(let e in gameEntities) {
+    gameEntities[e].update()
+  }
 
   input.clearLastKey()
+}
+
+let render = function( delta ) {
+  // Wipe canvas before render step
+  canvas.clearCanvas()
+
+  // Render map first as lowest level
+  map.render(canvas)
+
+  // Render entities over top of map
+  for(let e in gameEntities) {
+    gameEntities[e].render(canvas)
+  }
+
+  // Render canvas once all has been drawn to it
+  canvas.drawCanvas()
 }
 
 export default App

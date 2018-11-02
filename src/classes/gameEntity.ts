@@ -1,4 +1,5 @@
 import Input from './components/input'
+import Canvas from './components/canvas/canvas'
 
 class GameEntity {
     public x
@@ -29,7 +30,11 @@ class GameEntity {
       this.velocity.y = y
     }
 
-    public render() {
+    public render(canvas: Canvas) {
+      canvas.setCoord(this.x, this.y, this.getSprite())
+    }
+
+    public getSprite() {
       return '#'
     }
 
