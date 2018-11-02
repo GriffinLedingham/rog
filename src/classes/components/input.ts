@@ -1,19 +1,17 @@
 import * as keypress from 'keypress'
-import GameEntity from '../GameEntity'
+import GameEntity from '../gameEntity'
 import { SIGKILL } from 'constants';
 
 class InputComponent {
   public lastKey
   constructor() {
     keypress(process.stdin);
-
     process.stdin.on('keypress', (ch, key) => {
       this.setLastKey(key.name)
       if (key && key.ctrl && key.name == 'c') {
         process.exit()
       }
     })
-
     process.stdin.setRawMode(true);
     process.stdin.resume();
   }
@@ -40,9 +38,12 @@ class InputComponent {
     this.lastKey = key
   }
 
+  public clearLastKey() {
+    this.lastKey = false
+  }
+
   public getLastKey() : string {
     let lastKey = this.lastKey
-    this.lastKey = false
     return lastKey
   }
 }

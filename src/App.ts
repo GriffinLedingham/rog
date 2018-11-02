@@ -17,7 +17,6 @@ let tickLengthMs = 1000 / 60
 let previousTick = Date.now()
 let actualTicks = 0
 
-
 class App {
   constructor() {
     gameLoop()
@@ -43,6 +42,9 @@ let gameLoop = function( ) {
 let update = function( delta ) {
   map.render()
   player.update()
+  enemy.update()
+
+  input.clearLastKey()
 }
 
 export default App

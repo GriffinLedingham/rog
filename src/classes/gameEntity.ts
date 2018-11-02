@@ -32,6 +32,23 @@ class GameEntity {
     public render() {
       return '#'
     }
+
+    public update() {
+      if(this.input != undefined)
+        this.input.update(this)
+
+      this.moveEntity(this.velocity.x, this.velocity.y)
+      this.clearVelocity()
+    }
+
+    public moveEntity(xDelta: number, yDelta: number) {
+      this.x += xDelta
+      this.y += yDelta
+    }
+
+    public clearVelocity() {
+      this.velocity = {x:0,y:0}
+    }
 }
 
 export default GameEntity
