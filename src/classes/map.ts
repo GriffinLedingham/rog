@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 
 class Map {
   private grid
-  private players
+  private entities
   private height
   private width
   private map
@@ -10,12 +10,12 @@ class Map {
   constructor(height, width) {
     this.height = height
     this.width = width
-    this.players = []
+    this.entities = []
     this.map = this.buildCleanMap(this.height,this.width)
   }
 
-  public addPlayer(player) {
-    this.players.push(player)
+  public addEntity(entity) {
+    this.entities.push(entity)
   }
 
   buildCleanMap(height, width) {
@@ -40,9 +40,9 @@ class Map {
 
   render() {
     let workingMap = _.cloneDeep(this.map)
-    for(let p = 0; p < this.players.length; p++) {
-      let coords = this.players[p].getCoords()
-      workingMap[coords.x][coords.y] = '*'
+    for(let p = 0; p < this.entities.length; p++) {
+      let coords = this.entities[p].getPos()
+      workingMap[coords.x][coords.y] = this.entities[p].render()
     }
 
     let renderGrid = _.zip.apply(_, workingMap)

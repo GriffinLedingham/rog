@@ -1,10 +1,10 @@
-class Player {
-  private x
-  private y
+import GameEntity from './gameEntity'
 
-  constructor(x: number, y: number) {
-    this.x = x
-    this.y = y
+class Player extends GameEntity {
+  update() {
+    this.input.update(this)
+    this.movePlayer(this.velocity.x, this.velocity.y)
+    this.clearVelocity()
   }
 
   movePlayer(xDelta: number, yDelta: number) {
@@ -12,27 +12,12 @@ class Player {
     this.y += yDelta
   }
 
-  public getCoords() {
-    return {x: this.x, y: this.y}
+  clearVelocity() {
+    this.velocity = {x:0,y:0}
   }
 
-  public processInput(key) {
-    if(key) {
-      switch(key) {
-        case 'up':
-          this.movePlayer(0,-1)
-          break
-        case 'down':
-          this.movePlayer(0,1)
-          break
-        case 'left':
-          this.movePlayer(-1,0)
-          break
-        case 'right':
-          this.movePlayer(1,0)
-          break
-      }
-    }
+  render() {
+    return '*'
   }
 }
 

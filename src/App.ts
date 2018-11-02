@@ -1,18 +1,24 @@
 import Map from './classes/map'
-import Keyboard from './classes/util/keyboard'
 import Player from './classes/player';
+import GameEntity from './classes/gameEntity';
+import Input from './classes/components/input'
 
-let keyboardManager = new Keyboard()
-let player = new Player(10,10)
+let input = new Input()
+let player = new Player(input)
+player.setPos(10,10)
+
+let enemy = new GameEntity()
+enemy.setPos(20,20)
+
 let map = new Map(process.stdout.rows-1,process.stdout.columns)
-map.addPlayer(player)
+map.addEntity(player)
+map.addEntity(enemy)
 let tickLengthMs = 1000 / 60
 let previousTick = Date.now()
 let actualTicks = 0
 
 
 class App {
-  private keyboardManager
   constructor() {
     gameLoop()
   }
@@ -36,7 +42,7 @@ let gameLoop = function( ) {
 
 let update = function( delta ) {
   map.render()
-  player.processInput(keyboardManager.getLastKey())
+  player.update()
 }
 
 export default App
