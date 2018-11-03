@@ -3,13 +3,16 @@ import Canvas from './components/canvas/canvas'
 
 class Map {
   private grid
-  private height
-  private width
+  public  height
+  public  width
   private map
+  private physics
 
-  constructor(height, width) {
+  constructor(height, width, physics?) {
     this.height = height
     this.width = width
+    if(physics != undefined)
+      this.physics = physics
     this.map = this.buildCleanMap(this.height,this.width)
   }
 
@@ -20,9 +23,11 @@ class Map {
       for(let j = 0; j< height; j++) {
         if(i == 0 || i == (width-1)) {
           row.push('|')
+          this.physics.setFixedUnwalkable(i,j)
         }
         else if(j == 0 || j == (height-1)) {
           row.push('-')
+          this.physics.setFixedUnwalkable(i,j)
         }
         else {
           row.push(' ')

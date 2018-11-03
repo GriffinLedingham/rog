@@ -23,7 +23,7 @@ class Canvas {
     // Extend this
   }
 
-  drawCanvas() {
+  drawCanvas(minX,maxX,minY,maxY) {
     // Extend this
   }
 }

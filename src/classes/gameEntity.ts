@@ -1,15 +1,27 @@
 import Input from './components/input'
 import Canvas from './components/canvas/canvas'
+import Physics from './components/physics'
+import Camera from './components/camera'
 
 class GameEntity {
     public x
     public y
     public velocity
     public input
+    public physics
+    public camera
 
-    constructor(input?: Input) {
+    constructor(
+                input?: Input,
+                physics?: Physics,
+                camera?: Camera
+              ) {
       if(input != undefined)
         this.input = input
+      if(physics != undefined)
+        this.physics = physics
+      if(camera != undefined)
+        this.camera = camera
 
       this.x = 0
       this.y = 0
@@ -32,6 +44,8 @@ class GameEntity {
 
     public render(canvas: Canvas) {
       canvas.setCoord(this.x, this.y, this.getSprite())
+      if(this.camera != undefined)
+        this.camera.moveCamera(this.x, this.y)
     }
 
     public getSprite() {
@@ -42,7 +56,12 @@ class GameEntity {
       if(this.input != undefined)
         this.input.update(this)
 
-      this.moveEntity(this.velocity.x, this.velocity.y)
+      if(this.physics && this.physics.resolveCollision(this.x, this.y, this.velocity)) {
+        this.physics.setDynamicWalkable(this.x, this.y)
+        this.moveEntity(this.velocity.x, this.velocity.y)
+        this.physics.setDynamicUnwalkable(this.x, this.y)
+      }
+
       this.clearVelocity()
     }
 
